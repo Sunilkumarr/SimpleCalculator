@@ -31,9 +31,11 @@ jobs:
       - name: Detect simulator device
         id: sim
         run: |
-          device=$(xcrun simctl list devices available | grep -E "iPhone 15" | grep -v unavailable | head -1 | awk -F '[()]' '{print $1}' | xargs)
+          # Try to find a recent iPhone simulator, fallback to any available iPhone
+          device=$(xcrun simctl list devices available | grep -Eo 'iPhone [0-9]+( Pro)? \\([A-F0-9\-]+\\)' | head -1 | awk -F '(' '{print $1}' | xargs)
           if [ -z "$device" ]; then
-            device=$(xcrun simctl list devices available | grep -E "iPhone 14" | grep -v unavailable | head -1 | awk -F '[()]' '{print $1}' | xargs)
+            echo "No iPhone simulator found!"
+            exit 1
           fi
           echo "Using simulator: $device"
           echo "device=$device" >> $GITHUB_OUTPUT
