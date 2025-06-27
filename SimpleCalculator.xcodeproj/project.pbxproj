@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		ACFC8A8E2E0AFE97001A3D4A /* Exceptions for "SimpleCalculator" folder in "SimpleCalculator" target */ = {
+		ACFC8A8E2E0AFE97001A3D4A /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,24 +40,9 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		ACFC8A652E0AFE94001A3D4A /* SimpleCalculator */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				ACFC8A8E2E0AFE97001A3D4A /* Exceptions for "SimpleCalculator" folder in "SimpleCalculator" target */,
-			);
-			path = SimpleCalculator;
-			sourceTree = "<group>";
-		};
-		ACFC8A7F2E0AFE97001A3D4A /* SimpleCalculatorTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SimpleCalculatorTests;
-			sourceTree = "<group>";
-		};
-		ACFC8A892E0AFE97001A3D4A /* SimpleCalculatorUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SimpleCalculatorUITests;
-			sourceTree = "<group>";
-		};
+		ACFC8A652E0AFE94001A3D4A /* SimpleCalculator */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (ACFC8A8E2E0AFE97001A3D4A /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SimpleCalculator; sourceTree = "<group>"; };
+		ACFC8A7F2E0AFE97001A3D4A /* SimpleCalculatorTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SimpleCalculatorTests; sourceTree = "<group>"; };
+		ACFC8A892E0AFE97001A3D4A /* SimpleCalculatorUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SimpleCalculatorUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +185,7 @@
 				};
 			};
 			buildConfigurationList = ACFC8A5E2E0AFE94001A3D4A /* Build configuration list for PBXProject "SimpleCalculator" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -208,7 +194,6 @@
 			);
 			mainGroup = ACFC8A5A2E0AFE94001A3D4A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = ACFC8A642E0AFE94001A3D4A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
