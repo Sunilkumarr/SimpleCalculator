@@ -17,48 +17,51 @@ jobs:
         with:
           xcode-version: '16.2'
 
-      - name: Print Xcode version
+      - name: Print Xcode version and path
         run: |
-          echo "🧪 Xcode version:"
           xcodebuild -version
-          echo "📍 Active Xcode path:"
           xcode-select -p
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set default scheme (SimpleCalculator)
+      - name: Set default scheme
+        run: echo "SimpleCalculator" > default_scheme.txt
+
+      - name: Detect simulator device
+        id: sim
         run: |
-          echo "SimpleCalculator" > default_scheme.txt
+          device=$(xcrun simctl list devices available | grep -E "iPhone 15" | grep -v unavailable | head -1 | awk -F '[()]' '{print $1}' | xargs)
+          if [ -z "$device" ]; then
+            device=$(xcrun simctl list devices available | grep -E "iPhone 14" | grep -v unavailable | head -1 | awk -F '[()]' '{print $1}' | xargs)
+          fi
+          echo "Using simulator: $device"
+          echo "device=$device" >> $GITHUB_OUTPUT
 
       - name: Build project
         run: |
           set -e
           scheme=$(cat default_scheme.txt)
-          platform="iOS Simulator"
-          device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone [^()]+' | head -1 | xargs)
-
           file_to_build="SimpleCalculator.xcodeproj"
           filetype_param="-project"
+          device="${{ steps.sim.outputs.device }}"
 
-          echo "📦 Building $scheme from $file_to_build on device: $device"
+          echo "📦 Building scheme: $scheme on simulator: $device"
           xcodebuild build-for-testing \
             $filetype_param "$file_to_build" \
             -scheme "$scheme" \
-            -destination "platform=$platform,name=$device"
+            -destination "platform=iOS Simulator,name=$device"
 
       - name: Run tests
         run: |
           set -e
           scheme=$(cat default_scheme.txt)
-          platform="iOS Simulator"
-          device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone [^()]+' | head -1 | xargs)
-
           file_to_build="SimpleCalculator.xcodeproj"
           filetype_param="-project"
+          device="${{ steps.sim.outputs.device }}"
 
-          echo "🧪 Testing $scheme from $file_to_build on device: $device"
+          echo "🧪 Testing scheme: $scheme on simulator: $device"
           xcodebuild test-without-building \
             $filetype_param "$file_to_build" \
             -scheme "$scheme" \
-            -destination "platform=$platform,name=$device"
+            -destination "platform=iOS Simulator,name=$device"
