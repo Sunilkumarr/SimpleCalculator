@@ -8,23 +8,23 @@ on:
 
 jobs:
   build:
-    name: Build and Test default scheme using any available iPhone simulator
+    name: Build and Test default scheme using iPhone simulator
     runs-on: macos-latest
 
     steps:
-      - name: Set Xcode version to 16.4
+      - name: Set Xcode version to 16.2
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.4'
+          xcode-version: '16.2'
 
-      - name: Print current Xcode version
+      - name: Print current Xcode version and path
         run: |
           echo "🧪 Xcode version:"
           xcodebuild -version
           echo "📍 Xcode path:"
           xcode-select -p
 
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set Default Scheme
