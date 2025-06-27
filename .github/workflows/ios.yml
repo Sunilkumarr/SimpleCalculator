@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: iOS Starter Workflow
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build and Test default scheme using iPhone simulator
+    name: Build and Test SimpleCalculator on iPhone simulator
     runs-on: macos-latest
 
     steps:
@@ -17,59 +17,48 @@ jobs:
         with:
           xcode-version: '16.2'
 
-      - name: Print current Xcode version and path
+      - name: Print Xcode version
         run: |
           echo "🧪 Xcode version:"
           xcodebuild -version
-          echo "📍 Xcode path:"
+          echo "📍 Active Xcode path:"
           xcode-select -p
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set Default Scheme
+      - name: Set default scheme (SimpleCalculator)
         run: |
-          set -e
-          if ! xcodebuild -list -json > scheme-list.json 2>/dev/null; then
-            echo "❌ Failed to list schemes. Check Xcode compatibility."
-            exit 1
-          fi
-          default=$(ruby -rjson -e "puts JSON.parse(File.read('scheme-list.json'))['project']['targets'][0]")
-          echo "Using default scheme: $default"
-          echo "$default" > default
+          echo "SimpleCalculator" > default_scheme.txt
 
-      - name: Build
+      - name: Build project
         run: |
           set -e
-          scheme=$(cat default)
+          scheme=$(cat default_scheme.txt)
           platform="iOS Simulator"
           device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone [^()]+' | head -1 | xargs)
 
-          if ls *.xcworkspace 1>/dev/null 2>&1; then
-            filetype_parameter="-workspace"
-            file_to_build=$(ls *.xcworkspace | head -1)
-          else
-            filetype_parameter="-project"
-            file_to_build=$(ls *.xcodeproj | head -1)
-          fi
+          file_to_build="SimpleCalculator.xcodeproj"
+          filetype_param="-project"
 
-          echo "📦 Building $scheme from $file_to_build on $device"
-          xcodebuild build-for-testing $filetype_parameter "$file_to_build" -scheme "$scheme" -destination "platform=$platform,name=$device"
+          echo "📦 Building $scheme from $file_to_build on device: $device"
+          xcodebuild build-for-testing \
+            $filetype_param "$file_to_build" \
+            -scheme "$scheme" \
+            -destination "platform=$platform,name=$device"
 
-      - name: Test
+      - name: Run tests
         run: |
           set -e
-          scheme=$(cat default)
+          scheme=$(cat default_scheme.txt)
           platform="iOS Simulator"
           device=$(xcrun xctrace list devices 2>&1 | grep -oE 'iPhone [^()]+' | head -1 | xargs)
 
-          if ls *.xcworkspace 1>/dev/null 2>&1; then
-            filetype_parameter="-workspace"
-            file_to_build=$(ls *.xcworkspace | head -1)
-          else
-            filetype_parameter="-project"
-            file_to_build=$(ls *.xcodeproj | head -1)
-          fi
+          file_to_build="SimpleCalculator.xcodeproj"
+          filetype_param="-project"
 
-          echo "🧪 Testing $scheme from $file_to_build on $device"
-          xcodebuild test-without-building $filetype_parameter "$file_to_build" -scheme "$scheme" -destination "platform=$platform,name=$device"
+          echo "🧪 Testing $scheme from $file_to_build on device: $device"
+          xcodebuild test-without-building \
+            $filetype_param "$file_to_build" \
+            -scheme "$scheme" \
+            -destination "platform=$platform,name=$device"
